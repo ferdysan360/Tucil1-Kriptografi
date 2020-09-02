@@ -6,7 +6,7 @@ function encode(plainText, key) {
         let charNum = plainText.charCodeAt(0) - 97;
         let currentKey = key.charCodeAt(i % key);
 
-        charNum = (charNum + currentKey) % 26;
+        charNum = (((charNum + currentKey) % 26) + 26) % 26;
         charNum = charNum + 65;
         
         cipherText += String.fromCharCode(charNum);
@@ -20,10 +20,10 @@ function decode(cipherText, key) {
     cipherText = cipherText.toLowerCase();
 
     for (let i = 0; i < cipherText.length; i++) {
-        let charNum = cipherText.charCodeAt(0) - 97;
+        let charNum = cipherText.charCodeAt(0) - 65;
         let currentKey = key.charCodeAt(i % key);
 
-        charNum = (charNum - currentKey) % 26;
+        charNum = (((charNum - currentKey) % 26) + 26) % 26;
         charNum = charNum + 65;
         
         plainText += String.fromCharCode(charNum);
