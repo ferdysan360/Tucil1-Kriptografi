@@ -4,6 +4,7 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 
 function StandardVigenere() {
     const [sourceText, setSourceText] = useState("");
@@ -132,6 +133,7 @@ function StandardVigenere() {
 
     return (
         <div>
+            <Typography variant="h5">Standard Vigenere Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)}/>
             <div className={classes.textfield}>
                 <TextField id="standard-basic" label="Key" onChange={e => setKeyText(e.target.value)}/>
