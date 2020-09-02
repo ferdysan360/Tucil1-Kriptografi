@@ -8,10 +8,10 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import FullVigenere from './Components/FullVigenere/FullVigenere.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(0)
+    const [cipherId, setCipherId] = useState(1)
 
     const drawerWidth = 240;
 
@@ -114,10 +114,10 @@ function Home() {
         </Drawer>
         <main className={classes.content}>
           <Toolbar />
-          <Typography paragraph>
+          <div>
             {
                 cipherId === 0 ? "Standar Vigenere Cipher"
-                :cipherId === 1 ? "Full Vigenere Cipher"
+                :cipherId === 1 ? <FullVigenere />
                 :cipherId === 2 ? "Auto-Key Vigenere Cipher"
                 :cipherId === 3 ? "Extended Vigenere Cipher"
                 :cipherId === 4 ? "Playfair Cipher"
@@ -127,7 +127,7 @@ function Home() {
                 :cipherId === 8 ? "Enigma Cipher"
                 :null
             }
-          </Typography>
+          </div>
         </main>
       </div>
     </div>
