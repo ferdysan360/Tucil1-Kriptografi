@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
+import {encode, decode, splitByFive} from '../../Backend/PlayfairBackend.js';
 
 function Playfair() {
     /*---------------- STATE DECLARAION ------------------*/
@@ -12,83 +13,6 @@ function Playfair() {
     const [keyText, setKeyText] = useState("");
     const [resultText, setResultText] = useState("");
     let fileReader;
-
-    /*---------------- CIPHERING FUNCTION ------------------*/
-    function encode(plainText, key) {
-        let cipherText = "";
-        let keyCodes = getKeys(key);
-        plainText = cleanText(plainText).toLowerCase();
-
-        console.log(keyCodes);
-    
-        for (let i = 0; i < plainText.length; i++) {
-            let charNum = plainText.charCodeAt(i) - 97;
-            let currentKey = keyCodes[i % keyCodes.length];
-
-            if (charNum >= 0 && charNum <= 25) {
-                charNum = (((charNum + currentKey) % 26) + 26) % 26;
-                charNum = charNum + 65;
-                cipherText += String.fromCharCode(charNum);
-            }
-        }
-        return cipherText;
-    }
-    
-    function decode(cipherText, key) {
-        let plainText = "";
-        let keyCodes = getKeys(key);
-        cipherText = cleanText(cipherText).toUpperCase();
-
-        for (let i = 0; i < cipherText.length; i++) {
-            let charNum = cipherText.charCodeAt(i) - 65;
-            let currentKey = keyCodes[i % keyCodes.length];
-
-            if (charNum >= 0 && charNum <= 25) {
-                charNum = (((charNum - currentKey) % 26) + 26) % 26;
-                // console.log(charNum);
-                charNum = charNum + 65;
-                plainText += String.fromCharCode(charNum);
-            }
-        }
-        return plainText;
-    }
-
-    function cleanText(text) {
-        let result = "";
-        for (let i = 0; i < text.length; i++) {
-            if ((text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) || (text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122)) {
-                result += text.charAt(i);
-            }
-        }
-        return result;
-    }
-
-    function getKeys(text) {
-        let result = [];
-        for (let i = 0; i < text.length; i++) {
-            let charNum = text.charCodeAt(i) - 97;
-            if (charNum < 0) {
-                charNum += 32;
-            }
-
-            if (charNum >= 0 && charNum <= 25) {
-                result.push(charNum);
-            }
-        }
-        return result;
-    }
-    
-    function splitByFive(text) {
-        let result = "";
-    
-        for (let i = 0; i < text.length; i++) {
-            if (i % 5 === 0 && i !== 0) {
-                result += " ";
-            }
-            result += text.charAt(i);
-        }
-        return result;
-    }
 
     function download(data, filename, type) {
         var file = new Blob([data], { type: type });
@@ -163,7 +87,7 @@ function Playfair() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Standard Vigenere Cipher</Typography>
+            <Typography variant="h5">Playfair Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
