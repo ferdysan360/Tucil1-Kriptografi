@@ -11,6 +11,8 @@ function FullVigenere() {
 
     const [table,  setTable] = useState([]);
 
+    let fileReader;
+
     function generateTable() {
         let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17,
@@ -135,6 +137,37 @@ function FullVigenere() {
         return result;
     }
 
+    function download(data, filename, type) {
+        var file = new Blob([data], { type: type });
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    }
+
+    const handleFileRead = (e) => {
+        e.preventDefault()
+
+        const content = fileReader.result;
+        setSourceText(content);
+    }
+
+    const handleFileChosen = (file) => {
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsText(file);
+    }
+
     const handleEncode = (e) => {
         e.preventDefault();
         console.log("Test encode");
@@ -165,6 +198,9 @@ function FullVigenere() {
         divider: {
             marginTop: '40px',
             marginBottom: '40px',
+        },
+        input: {
+            display: "none",
         }
     }));
 
@@ -173,7 +209,22 @@ function FullVigenere() {
     return (
         <div>
             <Typography variant="h5">Full Vigenere Cipher</Typography>
-            <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)}/>
+            <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
+            <div>
+                <input
+                    accept=".txt"
+                    className={classes.input}
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    onChange={e => handleFileChosen(e.target.files[0])}
+                />
+                <label htmlFor="contained-button-file">
+                    <Button variant="contained" color="primary" component="span">
+                        Upload
+                    </Button>
+                </label>
+            </div>
             <div className={classes.textfield}>
                 <TextField id="standard-basic" label="Key" onChange={e => setKeyText(e.target.value)}/>
             </div>
@@ -189,6 +240,13 @@ function FullVigenere() {
                 <Divider />
             </div>
             <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText}/>
+            <div>
+                <label htmlFor="contained-download-file">
+                    <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "Ciphertext", "txt")}>
+                        Save To File
+                    </Button>
+                </label>
+            </div>
         </div>
     );
 }

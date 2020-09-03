@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -106,7 +106,6 @@ function Home() {
             <List>
               {cipherList.map((text, index) => (
                 <ListItem button key={text} onClick={() => test(index)}>
-                  {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                   <ListItemText primary={text} />
                 </ListItem>
               ))}
