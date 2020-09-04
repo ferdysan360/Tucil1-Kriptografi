@@ -48,12 +48,10 @@ function StandardVigenere() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        console.log("Test encode");
         setResultText(splitByFive(encode(sourceText, keyText)));
     }
 
     const handleDecode = (e) => {
-        console.log("Test decode");
         e.preventDefault();
         setResultText(splitByFive(decode(sourceText, keyText)));
     }

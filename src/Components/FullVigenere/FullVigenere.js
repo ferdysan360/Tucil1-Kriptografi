@@ -54,12 +54,10 @@ function FullVigenere() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        console.log("Test encode");
         setResultText(splitByFive(encode(sourceText, keyText, table)));
     }
 
     const handleDecode = (e) => {
-        console.log("Test decode");
         e.preventDefault();
         setResultText(splitByFive(decode(sourceText, keyText, table)));
     }
