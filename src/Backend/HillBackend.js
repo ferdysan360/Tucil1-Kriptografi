@@ -1,39 +1,104 @@
+import { matrix, multiply, inv, det, round } from 'mathjs';
+
 /*---------------- CIPHERING FUNCTION ------------------*/
 /* Encoding */
-export function encode(plainText, key) {
+export function encodeHill(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
+    let size = Math.sqrt(keyCodes.length);
+    let N = plainText.length;
+
     plainText = cleanText(plainText).toLowerCase();
 
-    for (let i = 0; i < plainText.length; i++) {
-        let charNum = plainText.charCodeAt(i) - 97;
-        let currentKey = keyCodes[i % keyCodes.length];
+    let keyMatrix = [];
+    for (let i = 0; i < size; i++) {
+        let keyArray = [];
 
-        if (charNum >= 0 && charNum <= 25) {
-            charNum = (((charNum + currentKey) % 26) + 26) % 26;
-            charNum = charNum + 65;
+        for (let j = 0; j < size; j++) {
+            let keyElement = keyCodes.shift();
+            keyArray.push(keyElement);
+        }
+        
+        keyMatrix.push(keyArray);
+    }
+
+    const keyMathMatrix = matrix(keyMatrix);
+
+    for (let i = 0; i < Math.ceil(N / size); i++) {
+        let arrayPlainText = [];
+        
+        for (let j = 0; j < size; j++) {
+            let charNum = plainText.charCodeAt(0) - 97;
+            plainText = plainText.substring(1);
+            arrayPlainText.push(charNum);
+        }
+        
+        let arrayCipherText = multiply(keyMathMatrix, arrayPlainText)._data;
+        
+        for (let j = 0; j < size; j++) {
+            let charNum = arrayCipherText[j];
+            charNum = ((charNum % 26) + 26) % 26;
+            charNum = charNum + 65
             cipherText += String.fromCharCode(charNum);
         }
     }
+
     return cipherText;
 }
 
 /* Decoding */
-export function decode(cipherText, key) {
+export function decodeHill(cipherText, key) {
     let plainText = "";
     let keyCodes = getKeys(key);
+    let size = Math.sqrt(keyCodes.length);
+    let N = cipherText.length;
+
     cipherText = cleanText(cipherText).toUpperCase();
 
-    for (let i = 0; i < cipherText.length; i++) {
-        let charNum = cipherText.charCodeAt(i) - 65;
-        let currentKey = keyCodes[i % keyCodes.length];
+    let keyMatrix = [];
+    for (let i = 0; i < size; i++) {
+        let keyArray = [];
 
-        if (charNum >= 0 && charNum <= 25) {
-            charNum = (((charNum - currentKey) % 26) + 26) % 26;
-            charNum = charNum + 65;
+        for (let j = 0; j < size; j++) {
+            let keyElement = keyCodes.shift();
+            keyArray.push(keyElement);
+        }
+
+        keyMatrix.push(keyArray);
+    }
+
+    let keyMathMatrix = inv(matrix(keyMatrix));
+    let determinant = round(det(matrix(keyMatrix)));
+
+    keyMathMatrix = multiply(determinant, keyMathMatrix);
+
+    determinant = ((determinant % 26) + 26) % 26;
+
+    determinant = modInverse(determinant, 26);
+
+    console.log(determinant);
+
+    keyMathMatrix = multiply(determinant, keyMathMatrix);
+
+    for (let i = 0; i < Math.ceil(N / size); i++) {
+        let arrayCipherText = [];
+
+        for (let j = 0; j < size; j++) {
+            let charNum = cipherText.charCodeAt(0) - 65;
+            cipherText = cipherText.substring(1);
+            arrayCipherText.push(charNum);
+        }
+
+        let arrayPlainText = multiply(keyMathMatrix, arrayCipherText)._data;
+
+        for (let j = 0; j < size; j++) {
+            let charNum = arrayPlainText[j];
+            charNum = ((charNum % 26) + 26) % 26;
+            charNum = charNum + 65
             plainText += String.fromCharCode(charNum);
         }
     }
+    
     return plainText;
 }
 
@@ -72,4 +137,13 @@ function getKeys(text) {
         }
     }
     return result;
+}
+
+function modInverse(hillKey, totalLetter) {
+    for (let i = 1; i < totalLetter; i++) {
+        if ((hillKey * i) % totalLetter === 1) {
+            return i;
+        }
+    }
+    return -1;
 }
