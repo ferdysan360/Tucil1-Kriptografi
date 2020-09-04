@@ -11,9 +11,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FullVigenere from './Components/FullVigenere/FullVigenere.js';
 import StandardVigenere from './Components/StandardVigenere/StandardVigenere.js';
 import AutoKeyVigenere from './Components/AutoKeyVigenere/AutoKeyVigenere.js';
+import ExtendedVigenere from './Components/ExtendedVigenere/ExtendedVigenere.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(2)
+    const [cipherId, setCipherId] = useState(3)
 
     const drawerWidth = 240;
 
@@ -120,7 +121,7 @@ function Home() {
                 cipherId === 0 ? <StandardVigenere />
                 :cipherId === 1 ? <FullVigenere />
                 :cipherId === 2 ? <AutoKeyVigenere />
-                :cipherId === 3 ? "Extended Vigenere Cipher"
+                :cipherId === 3 ? <ExtendedVigenere />
                 :cipherId === 4 ? "Playfair Cipher"
                 :cipherId === 5 ? "Super Encryption"
                 :cipherId === 6 ? "Affine Cipher"
