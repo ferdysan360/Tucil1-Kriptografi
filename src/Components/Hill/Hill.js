@@ -4,17 +4,15 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import { Typography, FormLabel } from '@material-ui/core';
+import { Typography} from '@material-ui/core';
 import { encode, decode, splitByFive } from '../../Backend/HillBackend.js';
 
 function Hill() {
     /*---------------- STATE DECLARAION ------------------*/
     const [sourceText, setSourceText] = useState("");
-    const [keyMatrix, setKeyMatrix] = useState([[]]);
+    const [keyText, setKeyText] = useState("");
     const [resultText, setResultText] = useState("");
-
-    const [sizeText, setSizeText] = useState("");
-    const [sizeView, setSizeView] = useState(0);
+    const [errorText, setErrorText] = useState("");
 
     let fileReader;
 
@@ -24,7 +22,7 @@ function Hill() {
             window.navigator.msSaveOrOpenBlob(file, filename);
         else { // Others
             var a = document.createElement("a"),
-            url = URL.createObjectURL(file);
+                url = URL.createObjectURL(file);
             a.href = url;
             a.download = filename;
             document.body.appendChild(a);
@@ -36,29 +34,35 @@ function Hill() {
         }
     }
 
-    /*---------------- GUI HANDLERS ------------------*/
-    const handleSizeText = (e) => {
-        setSizeText(e.target.value);
-    }
-
-    const handleCreateMatrix = (e) => {
-        e.preventDefault();
-        let size = parseInt(sizeText);
-        
-        let tempKeyMatrix = [];
-        for (let i = 0; i < size; i++) {
-            let tempMatrixRow = [];
-            for (let j = 0; j < size; j++) {
-                tempMatrixRow.push(0);
+    function validateKeyInput() {
+        let i = 1;
+        // Maks 100 x 100
+        while (i < 100000) {
+            console.log(i * i);
+            if ((i * i) > keyText.length) {
+                setErrorText("KeyInput should have the length of a SQUARE NUMBER");
+                return false;
+            } else if ((i * i) < keyText.length) {
+                i += 1;
+            } else {
+                break;
             }
-            tempKeyMatrix.push(tempMatrixRow);
         }
-        setKeyMatrix(tempKeyMatrix);
-        setSizeView(size);
+
+        // Check if it is still important
+        for (let j = 0; j < keyText.length; j++) {
+            if (keyText.charCodeAt(j) < 65 || keyText.charCodeAt(j) > 90) {
+                setErrorText("KeyInput should only contains UPPERCASE letters");
+                return false;
+            }
+        }
+
+        return true;
     }
 
+    /*---------------- GUI HANDLERS ------------------*/
     const handleFileRead = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         const content = fileReader.result;
         setSourceText(content);
@@ -72,12 +76,15 @@ function Hill() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(encode(sourceText, keyMatrix)));
+        if (validateKeyInput()) {
+            setErrorText("");
+            setResultText(splitByFive(encode(sourceText, keyText)));
+        }
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(decode(sourceText, keyMatrix)));
+        setResultText(splitByFive(decode(sourceText, keyText)));
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -126,32 +133,12 @@ function Hill() {
                     </Button>
                 </label>
             </div>
-            <div className={classes.divider}>
-                <Divider />
+            <div className={classes.textfield}>
+                <TextField id="standard-basic" 
+                    label="Key" 
+                    onChange={e => setKeyText(e.target.value)}
+                />
             </div>
-            <div>
-                <FormLabel component="legend"><b>Key Matrix</b></FormLabel>
-                <TextField id="standard-basic" label="Matrix Size" type="number" onChange={handleSizeText}/>
-                <div className={classes.buttongroup}>
-                    <Button variant="contained" onClick={handleCreateMatrix}>
-                        Create Matrix
-                    </Button>
-                </div>
-            </div>
-            <div className={classes.divider} />
-            <div>
-                {sizeView <= 0 ? 
-                    <FormLabel component="legend">Matrix Size Not Positive</FormLabel> :
-                    keyMatrix.map((keyRow, rowIdx) => (
-                        keyRow.map((keyCell, colIdx) => (
-                            <div key={`${rowIdx},${colIdx}`}>
-                                Test
-                            </div>
-                        ))
-                    ))
-                }
-            </div>
-            <div className={classes.divider} />
             <div className={classes.buttongroup}>
                 <Button variant="contained" onClick={handleEncode}>
                     Encrypt
@@ -159,6 +146,9 @@ function Hill() {
                 <Button variant="contained" onClick={handleDecode}>
                     Decrypt
                 </Button>
+            </div>
+            <div>
+                <label style={{ color: "red" }}>{errorText}</label>
             </div>
             <div className={classes.divider}>
                 <Divider />
