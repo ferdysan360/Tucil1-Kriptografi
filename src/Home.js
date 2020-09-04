@@ -15,6 +15,7 @@ import ExtendedVigenere from './Components/ExtendedVigenere/ExtendedVigenere.js'
 import Playfair from "./Components/Playfair/Playfair.js";
 import SuperEncryption from './Components/SuperEncryption/SuperEncryption.js';
 import Affine from './Components/Affine/Affine.js';
+import Hill from './Components/Hill/Hill.js';
 
 function Home() {
     const [cipherId, setCipherId] = useState(0)
@@ -128,7 +129,7 @@ function Home() {
                 :cipherId === 4 ? <Playfair />
                 :cipherId === 5 ? <SuperEncryption />
                 :cipherId === 6 ? <Affine />
-                :cipherId === 7 ? "Hill Cipher"
+                :cipherId === 7 ? <Hill />
                 :cipherId === 8 ? "Enigma Cipher"
                 :null
             }
