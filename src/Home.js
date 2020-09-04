@@ -14,9 +14,10 @@ import AutoKeyVigenere from './Components/AutoKeyVigenere/AutoKeyVigenere.js';
 import Playfair from "./Components/Playfair/Playfair.js";
 import SuperEncryption from './Components/SuperEncryption/SuperEncryption.js';
 import Affine from './Components/Affine/Affine.js';
+import Hill from './Components/Hill/Hill.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(6)
+    const [cipherId, setCipherId] = useState(7)
 
     const drawerWidth = 240;
 
@@ -127,7 +128,7 @@ function Home() {
                 :cipherId === 4 ? <Playfair />
                 :cipherId === 5 ? <SuperEncryption />
                 :cipherId === 6 ? <Affine />
-                :cipherId === 7 ? "Hill Cipher"
+                :cipherId === 7 ? <Hill />
                 :cipherId === 8 ? "Enigma Cipher"
                 :null
             }
