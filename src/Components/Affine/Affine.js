@@ -4,12 +4,13 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
-import { encode, decode, splitByFive } from '../../Backend/StandardVigenereBackend.js';
+import { Typography, FormLabel, FormControlLabel, RadioGroup, Radio } from '@material-ui/core';
+import { encode, decode, splitByFive } from '../../Backend/AffineBackend.js';
 
-function StandardVigenere() {
+function Affine() {
     /*---------------- STATE DECLARAION ------------------*/
     const [sourceText, setSourceText] = useState("");
+    const [affineKeyText, setAffineKeyText] = useState("");
     const [keyText, setKeyText] = useState("");
     const [resultText, setResultText] = useState("");
     let fileReader;
@@ -48,12 +49,16 @@ function StandardVigenere() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(encode(sourceText, keyText)));
+        setResultText(splitByFive(encode(sourceText, affineKeyText, keyText)));
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(decode(sourceText, keyText)));
+        setResultText(splitByFive(decode(sourceText, affineKeyText, keyText)));
+    }
+
+    const handleAffineKeyChange = (e) => {
+        setAffineKeyText(e.target.value);
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -85,7 +90,7 @@ function StandardVigenere() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Standard Vigenere Cipher</Typography>
+            <Typography variant="h5">Affine Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
@@ -102,8 +107,28 @@ function StandardVigenere() {
                     </Button>
                 </label>
             </div>
+            <div className={classes.divider}>
+                <Divider />
+            </div>
+            <div className={classes.buttongroup} >
+                <FormLabel component="legend"><b>Affine Key</b></FormLabel>
+                <RadioGroup row aria-label="Affine Key" name="key" onChange={handleAffineKeyChange} style={{justifyContent: 'center'}}>
+                    <FormControlLabel value="1" control={<Radio />} label="1" />
+                    <FormControlLabel value="3" control={<Radio />} label="3" />
+                    <FormControlLabel value="5" control={<Radio />} label="5" />
+                    <FormControlLabel value="7" control={<Radio />} label="7" />
+                    <FormControlLabel value="9" control={<Radio />} label="9" />
+                    <FormControlLabel value="11" control={<Radio />} label="11" />
+                    <FormControlLabel value="15" control={<Radio />} label="15" />
+                    <FormControlLabel value="17" control={<Radio />} label="17" />
+                    <FormControlLabel value="19" control={<Radio />} label="19" />
+                    <FormControlLabel value="21" control={<Radio />} label="21" />
+                    <FormControlLabel value="23" control={<Radio />} label="23" />
+                    <FormControlLabel value="25" control={<Radio />} label="25" />
+                </RadioGroup>
+            </div>
             <div className={classes.textfield}>
-                <TextField id="standard-basic" label="Key" onChange={e => setKeyText(e.target.value)}/>
+                <TextField id="standard-basic" label="Key" type="number" onChange={e => setKeyText(e.target.value)}/>
             </div>
             <div className={classes.buttongroup}>
                 <Button variant="contained" onClick={handleEncode}>
@@ -128,4 +153,4 @@ function StandardVigenere() {
     );
 }
 
-export default StandardVigenere;
+export default Affine;

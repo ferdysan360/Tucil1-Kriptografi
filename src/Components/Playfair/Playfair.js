@@ -5,9 +5,9 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
-import { encode, decode, splitByFive } from '../../Backend/StandardVigenereBackend.js';
+import {encode, decode, splitByFive} from '../../Backend/PlayfairBackend.js';
 
-function StandardVigenere() {
+function Playfair() {
     /*---------------- STATE DECLARAION ------------------*/
     const [sourceText, setSourceText] = useState("");
     const [keyText, setKeyText] = useState("");
@@ -85,7 +85,7 @@ function StandardVigenere() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Standard Vigenere Cipher</Typography>
+            <Typography variant="h5">Playfair Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
@@ -128,4 +128,4 @@ function StandardVigenere() {
     );
 }
 
-export default StandardVigenere;
+export default Playfair;
