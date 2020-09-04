@@ -15,7 +15,7 @@ import Playfair from "./Components/Playfair/Playfair.js";
 import SuperEncryption from './Components/SuperEncryption/SuperEncryption.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(5)
+    const [cipherId, setCipherId] = useState(0)
 
     const drawerWidth = 240;
 
