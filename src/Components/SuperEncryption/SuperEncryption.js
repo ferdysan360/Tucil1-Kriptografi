@@ -5,12 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
-import {encode, decode, splitByFive} from '../../Backend/PlayfairBackend.js';
+import { superEncode, superDecode } from '../../Backend/SuperEncryptionBackend.js';
+import { splitByFive } from '../../Backend/StandardVigenereBackend.js';
 
-function Playfair() {
+function SuperEncryption() {
     /*---------------- STATE DECLARAION ------------------*/
     const [sourceText, setSourceText] = useState("");
     const [keyText, setKeyText] = useState("");
+    const [transposeKeyText, setTransposeKeyText] = useState("");
     const [resultText, setResultText] = useState("");
     let fileReader;
 
@@ -48,12 +50,12 @@ function Playfair() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(encode(sourceText, keyText)));
+        setResultText(splitByFive(superEncode(sourceText, keyText, transposeKeyText)));
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(decode(sourceText, keyText)));
+        setResultText(splitByFive(superDecode(sourceText, keyText, transposeKeyText)));
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -85,7 +87,7 @@ function Playfair() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Playfair Cipher</Typography>
+            <Typography variant="h5">Super Encryption Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
@@ -104,6 +106,9 @@ function Playfair() {
             </div>
             <div className={classes.textfield}>
                 <TextField id="standard-basic" label="Key" onChange={e => setKeyText(e.target.value)}/>
+            </div>
+            <div className={classes.textfield}>
+                <TextField id="standard-basic" label="TransposeKey" onChange={e => setTransposeKeyText(e.target.value)}/>
             </div>
             <div className={classes.buttongroup}>
                 <Button variant="contained" onClick={handleEncode}>
@@ -128,4 +133,4 @@ function Playfair() {
     );
 }
 
-export default Playfair;
+export default SuperEncryption;

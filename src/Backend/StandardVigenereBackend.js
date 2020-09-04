@@ -5,8 +5,6 @@ export function encode(plainText, key) {
     let keyCodes = getKeys(key);
     plainText = cleanText(plainText).toLowerCase();
 
-    console.log(keyCodes);
-
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText.charCodeAt(i) - 97;
         let currentKey = keyCodes[i % keyCodes.length];
@@ -32,7 +30,6 @@ export function decode(cipherText, key) {
 
         if (charNum >= 0 && charNum <= 25) {
             charNum = (((charNum - currentKey) % 26) + 26) % 26;
-            // console.log(charNum);
             charNum = charNum + 65;
             plainText += String.fromCharCode(charNum);
         }
