@@ -49,14 +49,6 @@ function Hill() {
             }
         }
 
-        // Check if it is still important
-        for (let j = 0; j < keyText.length; j++) {
-            if (keyText.charCodeAt(j) < 65 || keyText.charCodeAt(j) > 90) {
-                setErrorText("KeyInput should only contains UPPERCASE letters");
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -78,13 +70,13 @@ function Hill() {
         e.preventDefault();
         if (validateKeyInput()) {
             setErrorText("");
-            setResultText(splitByFive(encode(sourceText, keyText)));
+            setResultText(splitByFive(encode(sourceText, keyText.toUpperCase())));
         }
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(decode(sourceText, keyText)));
+        setResultText(splitByFive(decode(sourceText, keyText.toUpperCase())));
     }
 
     const useStyles = makeStyles((theme) => ({
