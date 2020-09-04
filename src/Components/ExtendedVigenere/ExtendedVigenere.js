@@ -200,7 +200,7 @@ function ExtendedVigenere() {
                         <div>
                             {
                                 resultBytes === null ? "No File Result"
-                                    : "File ready: " + "crypt" + inputFile.name.split('.')[0]
+                                    : "File ready: crypt" + inputFile.name.split('.')[0]
                             }
                         </div>
                     </div>

@@ -43,6 +43,9 @@ function Home() {
             flexGrow: 1,
             padding: theme.spacing(3),
         },
+        title: {
+          marginLeft: theme.spacing(1),
+        }
     }));
 
     const classes = useStyles();
@@ -59,7 +62,7 @@ function Home() {
         "Enigma Cipher"
     ];
 
-    function test(index) {
+    function handleChange(index) {
         if (index === 0) {
             setCipherId(0);
         }
@@ -96,8 +99,11 @@ function Home() {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <Typography variant="h6" noWrap>
-              CryptTools
-          </Typography>
+              CrypTK
+            </Typography>
+            <Typography variant="h7" noWrap className={classes.title}>
+              By Ferdy and Meyer
+            </Typography>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -111,7 +117,7 @@ function Home() {
           <div className={classes.drawerContainer}>
             <List>
               {cipherList.map((text, index) => (
-                <ListItem button key={text} onClick={() => test(index)}>
+                <ListItem button key={text} onClick={() => handleChange(index)} selected={cipherId === index}>
                   <ListItemText primary={text} />
                 </ListItem>
               ))}

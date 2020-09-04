@@ -1,8 +1,8 @@
-import { matrix, multiply, inv, det, round } from 'mathjs';
+import { matrix, multiply, inv, det, round, gcd } from 'mathjs';
 
 /*---------------- CIPHERING FUNCTION ------------------*/
 /* Encoding */
-export function encodeHill(plainText, key) {
+export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
     let size = Math.sqrt(keyCodes.length);
@@ -47,7 +47,7 @@ export function encodeHill(plainText, key) {
 }
 
 /* Decoding */
-export function decodeHill(cipherText, key) {
+export function decode(cipherText, key) {
     let plainText = "";
     let keyCodes = getKeys(key);
     let size = Math.sqrt(keyCodes.length);
@@ -67,13 +67,22 @@ export function decodeHill(cipherText, key) {
         keyMatrix.push(keyArray);
     }
 
-    let keyMathMatrix = inv(matrix(keyMatrix));
-    let determinant = round(det(matrix(keyMatrix)));
+    let determinant = det(matrix(keyMatrix));
+    let tempDeterminant = round(determinant);
 
-    keyMathMatrix = multiply(determinant, keyMathMatrix);
+    if (tempDeterminant === 0 || gcd(tempDeterminant, 26) !== 1) {
+        console.error("Key Error! Determinant not a coprime of 26!")
+        return "-1";
+    }
+
+    let keyMathMatrix = inv(matrix(keyMatrix));
+
+    keyMathMatrix = round(multiply(determinant, keyMathMatrix));
+
+    determinant = round(determinant);
 
     determinant = ((determinant % 26) + 26) % 26;
-
+    
     determinant = modInverse(determinant, 26);
 
     console.log(determinant);
