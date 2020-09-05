@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Tucil1-Kriptografi/static/css/main.5f361e03.chunk.css",
+    "main.js": "/Tucil1-Kriptografi/static/js/main.08064552.chunk.js",
+    "main.js.map": "/Tucil1-Kriptografi/static/js/main.08064552.chunk.js.map",
+    "runtime-main.js": "/Tucil1-Kriptografi/static/js/runtime-main.46a170b6.js",
+    "runtime-main.js.map": "/Tucil1-Kriptografi/static/js/runtime-main.46a170b6.js.map",
+    "static/js/2.cc5619f1.chunk.js": "/Tucil1-Kriptografi/static/js/2.cc5619f1.chunk.js",
+    "static/js/2.cc5619f1.chunk.js.map": "/Tucil1-Kriptografi/static/js/2.cc5619f1.chunk.js.map",
+    "index.html": "/Tucil1-Kriptografi/index.html",
+    "precache-manifest.08cf8b5c5c217838d862ed7f7949dba1.js": "/Tucil1-Kriptografi/precache-manifest.08cf8b5c5c217838d862ed7f7949dba1.js",
+    "service-worker.js": "/Tucil1-Kriptografi/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/Tucil1-Kriptografi/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.cc5619f1.chunk.js.LICENSE.txt": "/Tucil1-Kriptografi/static/js/2.cc5619f1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.46a170b6.js",
+    "static/js/2.cc5619f1.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.08064552.chunk.js"
+  ]
+}
