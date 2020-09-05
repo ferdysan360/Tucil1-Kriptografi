@@ -10,9 +10,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Typography } from '@material-ui/core';
-import { encode, decode, encodeFile, decodeFile } from '../../Backend/ExtendedVigenereBackend.js';
+import { encode, decode, encodeFile, decodeFile, splitByFive } from '../../Backend/ExtendedVigenereBackend.js';
 
 function ExtendedVigenere() {
+    const [outputType, setOutputType] = useState("nospaces");
     const [value, setValue] = useState("text");
     const [sourceText, setSourceText] = useState("");
     const [sourceBytes, setSourceBytes] = useState(null);
@@ -87,6 +88,11 @@ function ExtendedVigenere() {
         setValue(e.target.value);
     }
 
+    const handleOutputTypeChange = (e) => {
+        e.preventDefault();
+        setOutputType(e.target.value);
+    }
+
     const useStyles = makeStyles((theme) => ({
         buttongroup: {
             '& > *': {
@@ -111,7 +117,10 @@ function ExtendedVigenere() {
         },
         input: {
             display: "none",
-        }
+        },
+        outputtype: {
+            marginTop: '20px',
+        },
     }));
 
     const classes = useStyles();
@@ -184,7 +193,23 @@ function ExtendedVigenere() {
             {
                 value === "text" ?
                 <div>
-                    <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText} />
+                    <div className={classes.outputtype}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">Output Type</FormLabel>
+                            <RadioGroup aria-label="input-type" name="input-type" value={outputType} onChange={handleOutputTypeChange}>
+                                <div>
+                                    <FormControlLabel value="nospaces" control={<Radio />} label="No Spaces" />
+                                    <FormControlLabel value="splitbyfive" control={<Radio />} label="Split by Five" />
+                                </div>
+                            </RadioGroup>
+                        </FormControl>
+                    </div>
+                    {
+                        outputType === "nospaces" ?
+                            <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText} />
+                            :
+                            <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={splitByFive(resultText)} />
+                    }
                     <div className={classes.buttongroup}>
                         <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "crypt" + inputFile.name, "application/octet-stream")}>
                             Save Text To File

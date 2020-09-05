@@ -4,12 +4,18 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import { Typography } from '@material-ui/core';
 import { superEncode, superDecode } from '../../Backend/SuperEncryptionBackend.js';
 import { splitByFive } from '../../Backend/StandardVigenereBackend.js';
 
 function SuperEncryption() {
     /*---------------- STATE DECLARAION ------------------*/
+    const [value, setValue] = useState("nospaces");
     const [sourceText, setSourceText] = useState("");
     const [keyText, setKeyText] = useState("");
     const [transposeKeyText, setTransposeKeyText] = useState("");
@@ -50,12 +56,17 @@ function SuperEncryption() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(superEncode(sourceText, keyText, transposeKeyText)));
+        setResultText(superEncode(sourceText, keyText, transposeKeyText));
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(superDecode(sourceText, keyText, transposeKeyText)));
+        setResultText(superDecode(sourceText, keyText, transposeKeyText));
+    }
+
+    const handleTypeChange = (e) => {
+        e.preventDefault();
+        setValue(e.target.value);
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -79,7 +90,10 @@ function SuperEncryption() {
         },
         input: {
             display: "none",
-        }
+        },
+        outputtype: {
+            marginTop: '20px',
+        },
     }));
 
     const classes = useStyles();
@@ -121,7 +135,23 @@ function SuperEncryption() {
             <div className={classes.divider}>
                 <Divider />
             </div>
-            <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText}/>
+            <div className={classes.outputtype}>
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Output Type</FormLabel>
+                    <RadioGroup aria-label="input-type" name="input-type" value={value} onChange={handleTypeChange}>
+                        <div>
+                            <FormControlLabel value="nospaces" control={<Radio />} label="No Spaces" />
+                            <FormControlLabel value="splitbyfive" control={<Radio />} label="Split by Five" />
+                        </div>
+                    </RadioGroup>
+                </FormControl>
+            </div>
+            {
+                value === "nospaces" ?
+                <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText} />
+                :
+                <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={splitByFive(resultText)}/>
+            }
             <div>
                 <label htmlFor="contained-download-file">
                     <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "Ciphertext", "txt")}>
