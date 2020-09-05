@@ -101,7 +101,7 @@ function Home() {
             <Typography variant="h6" noWrap>
               CrypTK
             </Typography>
-            <Typography variant="h7" noWrap className={classes.title}>
+            <Typography variant="subtitle2" noWrap className={classes.title}>
               By Ferdy and Meyer
             </Typography>
           </Toolbar>

@@ -4,11 +4,17 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import { Typography } from '@material-ui/core';
 import { generateTable, encode, decode, splitByFive } from '../../Backend/FullVigenereBackend.js';
 
 function FullVigenere() {
 
+    const [value, setValue] = useState("nospaces");
     const [table,  setTable] = useState([]);
 
     let fileReader;
@@ -54,12 +60,17 @@ function FullVigenere() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(encode(sourceText, keyText, table)));
+        setResultText(encode(sourceText, keyText, table));
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(splitByFive(decode(sourceText, keyText, table)));
+        setResultText(decode(sourceText, keyText, table));
+    }
+
+    const handleTypeChange = (e) => {
+        e.preventDefault();
+        setValue(e.target.value);
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -83,7 +94,10 @@ function FullVigenere() {
         },
         input: {
             display: "none",
-        }
+        },
+        outputtype: {
+            marginTop: '20px',
+        },
     }));
 
     const classes = useStyles();
@@ -121,7 +135,23 @@ function FullVigenere() {
             <div className={classes.divider}>
                 <Divider />
             </div>
-            <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText}/>
+            <div className={classes.outputtype}>
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Output Type</FormLabel>
+                    <RadioGroup aria-label="input-type" name="input-type" value={value} onChange={handleTypeChange}>
+                        <div>
+                            <FormControlLabel value="nospaces" control={<Radio />} label="No Spaces" />
+                            <FormControlLabel value="splitbyfive" control={<Radio />} label="Split by Five" />
+                        </div>
+                    </RadioGroup>
+                </FormControl>
+            </div>
+            {
+                value === "nospaces" ?
+                <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={resultText} />
+                :
+                <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={splitByFive(resultText)}/>
+            }
             <div>
                 <label htmlFor="contained-download-file">
                     <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "Ciphertext", "txt")}>
