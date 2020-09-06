@@ -43,6 +43,8 @@ export function encode(plainText, key) {
         }
     }
 
+    cipherText = cleanText(cipherText);
+
     return cipherText;
 }
 
@@ -155,4 +157,30 @@ function modInverse(hillKey, totalLetter) {
         }
     }
     return -1;
+}
+
+export function validateDeterminant(key) {
+    let keyCodes = getKeys(key);
+    let size = Math.sqrt(keyCodes.length);
+    let keyMatrix = [];
+    for (let i = 0; i < size; i++) {
+        let keyArray = [];
+
+        for (let j = 0; j < size; j++) {
+            let keyElement = keyCodes.shift();
+            keyArray.push(keyElement);
+        }
+
+        keyMatrix.push(keyArray);
+    }
+
+    let determinant = det(matrix(keyMatrix));
+    let tempDeterminant = round(determinant);
+
+    if (tempDeterminant === 0 || gcd(tempDeterminant, 26) !== 1) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }

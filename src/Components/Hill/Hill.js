@@ -10,7 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Typography} from '@material-ui/core';
-import { encode, decode, splitByFive } from '../../Backend/HillBackend.js';
+import { encode, decode, splitByFive, validateDeterminant } from '../../Backend/HillBackend.js';
 
 function Hill() {
     /*---------------- STATE DECLARAION ------------------*/
@@ -19,6 +19,7 @@ function Hill() {
     const [keyText, setKeyText] = useState("");
     const [resultText, setResultText] = useState("");
     const [errorText, setErrorText] = useState("");
+    const [resultErrorText, setResultErrorText] = useState("")
 
     let fileReader;
 
@@ -77,6 +78,12 @@ function Hill() {
         if (validateKeyInput()) {
             setErrorText("");
             setResultText(encode(sourceText, keyText.toUpperCase()));
+            if (validateDeterminant(keyText)) {
+                setResultErrorText("")
+            }
+            else {
+                setResultErrorText("Warning! Determinant not a coprime of 26! Ciphertext cannot be decrypted!");
+            }
         }
     }
 
@@ -176,6 +183,9 @@ function Hill() {
                 :
                 <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={splitByFive(resultText)}/>
             }
+            <div>
+                <label style={{ color: "#ff9900" }}>{resultErrorText}</label>
+            </div>
             <div>
                 <label htmlFor="contained-download-file">
                     <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "Ciphertext", "txt")}>
