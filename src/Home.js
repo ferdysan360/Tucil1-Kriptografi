@@ -19,7 +19,7 @@ import Hill from './Components/Hill/Hill.js';
 import Enigma from './Components/Enigma/Enigma.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(8)
+    const [cipherId, setCipherId] = useState(0)
 
     const drawerWidth = 240;
 
