@@ -16,9 +16,10 @@ import Playfair from "./Components/Playfair/Playfair.js";
 import SuperEncryption from './Components/SuperEncryption/SuperEncryption.js';
 import Affine from './Components/Affine/Affine.js';
 import Hill from './Components/Hill/Hill.js';
+import Enigma from './Components/Enigma/Enigma.js';
 
 function Home() {
-    const [cipherId, setCipherId] = useState(0)
+    const [cipherId, setCipherId] = useState(8)
 
     const drawerWidth = 240;
 
@@ -136,7 +137,7 @@ function Home() {
                 :cipherId === 5 ? <SuperEncryption />
                 :cipherId === 6 ? <Affine />
                 :cipherId === 7 ? <Hill />
-                :cipherId === 8 ? "Enigma Cipher"
+                :cipherId === 8 ? <Enigma />
                 :null
             }
           </div>
