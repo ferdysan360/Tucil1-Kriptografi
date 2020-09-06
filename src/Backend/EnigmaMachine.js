@@ -1,11 +1,14 @@
-import seedrandom from 'seedrandom';
-
 export class EnigmaMachine {
-    constructor() {
-        this.firstRotor = EnigmaRotor();
-        this.secondRotor = EnigmaRotor();
-        this.thirdRotor = EnigmaRotor();
-        this.fourthRotor = EnigmaRotor();
+    constructor(seed) {
+        let firstSeed = "first" + seed;
+        let secondSeed = "second" + seed;
+        let thirdSeed = "third" + seed;
+        let fourthSeed = "fourth" + seed;
+
+        this.firstRotor = new EnigmaRotor(firstSeed);
+        this.secondRotor = new EnigmaRotor(secondSeed);
+        this.thirdRotor = new EnigmaRotor(thirdSeed);
+        this.fourthRotor = new EnigmaRotor(fourthSeed);
 
         this.firstRotorSpinCount = 0;
         this.secondRotorSpinCount = 0;
@@ -20,6 +23,8 @@ export class EnigmaMachine {
         processedCharNum = this.fourthRotor.searchCipher(processedCharNum);
 
         this.rotateRotors();
+
+        return processedCharNum;
     }
 
     decodeLetter(charNum) {
@@ -29,6 +34,8 @@ export class EnigmaMachine {
         processedCharNum = this.firstRotor.searchPlain(processedCharNum);
 
         this.rotateRotors();
+
+        return processedCharNum;
     }
 
     rotateRotors() {
@@ -59,18 +66,33 @@ export class EnigmaMachine {
 }
 
 export class EnigmaRotor {
-    constructor() {
+    // constructor() {
+    //     this.leftRotor = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    //         10, 11, 12, 13, 14, 15, 16, 17,
+    //         18, 19, 20, 21, 22, 23, 24, 25
+    //     ];
+
+    //     const rng = seedrandom();
+    //     let rightRotor = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    //         10, 11, 12, 13, 14, 15, 16, 17,
+    //         18, 19, 20, 21, 22, 23, 24, 25
+    //     ];
+    //     rightRotor.sort(() => rng.quick() - 0.5);
+    //     this.rightRotor = rightRotor;
+    // }
+
+    constructor(seed) {
         this.leftRotor = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17,
             18, 19, 20, 21, 22, 23, 24, 25
         ];
 
-        const rng = seedrandom();
+        let shuffleSeed = require('shuffle-seed');
         let rightRotor = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17,
             18, 19, 20, 21, 22, 23, 24, 25
         ];
-        rightRotor.sort(() => rng.quick() - 0.5);
+        rightRotor = shuffleSeed.shuffle(rightRotor, seed);
         this.rightRotor = rightRotor;
     }
 
