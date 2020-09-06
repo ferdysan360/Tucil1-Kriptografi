@@ -99,7 +99,7 @@ function Enigma() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Standard Vigenere Cipher</Typography>
+            <Typography variant="h5">Enigma Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
