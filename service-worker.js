@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Tucil1-Kriptografi/precache-manifest.08cf8b5c5c217838d862ed7f7949dba1.js"
+  "/Tucil1-Kriptografi/precache-manifest.a3a0e54d36655cf78e634d09fee2afc9.js"
 );
 
 self.addEventListener('message', (event) => {
