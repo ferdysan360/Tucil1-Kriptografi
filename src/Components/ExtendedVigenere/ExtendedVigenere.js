@@ -23,6 +23,25 @@ function ExtendedVigenere() {
     const [inputFile, setInputFile] = useState(null);
     let fileReader;
 
+    function downloadText(data, filename, type) {
+        let newFilename = filename.split('.')[0];
+        var file = new Blob([data], { type: type });
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, newFilename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = newFilename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    }
+
     function download(data, filename, type) {
         data = data.buffer;
         console.log(data);
@@ -57,8 +76,25 @@ function ExtendedVigenere() {
         fileReader = new FileReader();
         fileReader.onloadend = handleFileRead;
         fileReader.readAsArrayBuffer(file);
-        //console.log(file);
+        console.log(file);
         
+    }
+
+    const handleTextFileRead = (e) => {
+        e.preventDefault()
+
+        console.log(fileReader)
+        const content = fileReader.result;
+        setSourceText("");
+        setSourceText(content);
+    }
+
+    const handleTextFileChosen = (file) => {
+        fileReader = new FileReader();
+        fileReader.onloadend = handleTextFileRead;
+        fileReader.readAsText(file);
+        console.log(file);
+
     }
     
     const handleEncode = (e) => {
@@ -141,7 +177,24 @@ function ExtendedVigenere() {
             </div>
             {
                 value === "text" ? 
-                <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText} />
+                <div>
+                    <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText} />
+                    <div>
+                        <input
+                            accept=".txt"
+                            className={classes.input}
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            onChange={e => handleTextFileChosen(e.target.files[0])}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" color="primary" component="span">
+                                Upload
+                    </Button>
+                        </label>
+                    </div>
+                </div>
                 :
                 <div className={classes.buttongroup}>
                     <input
@@ -211,7 +264,7 @@ function ExtendedVigenere() {
                             <TextareaAutosize aria-label="textarea" placeholder="Result Plaintext or CipherText" rowsMin="20" rowsMax="20" className={classes.textarea} value={splitByFive(resultText)} />
                     }
                     <div className={classes.buttongroup}>
-                        <Button variant="contained" color="primary" component="span" onClick={() => download(resultText, "crypt" + inputFile.name, "application/octet-stream")}>
+                        <Button variant="contained" color="primary" component="span" onClick={() => downloadText(resultText, "Ciphertext", "")}>
                             Save Text To File
                         </Button>
                     </div>
@@ -219,7 +272,7 @@ function ExtendedVigenere() {
                 :
                 <div>
                     <div className={classes.buttongroup}>
-                        <Button variant="contained" color="primary" component="span" onClick={() => download(resultBytes, "crypt" + inputFile.name, "application/octet-stream")}>
+                        <Button variant="contained" color="primary" component="span" onClick={() => download(resultBytes, "crypt" + inputFile.name, inputFile.type)}>
                             Save To File
                         </Button>
                         <div>
