@@ -43,6 +43,8 @@ export function encode(plainText, key) {
         }
     }
 
+    cipherText = cleanText(cipherText);
+
     return cipherText;
 }
 
