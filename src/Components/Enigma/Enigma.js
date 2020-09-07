@@ -10,14 +10,19 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Typography } from '@material-ui/core';
-import { encode, decode, splitByFive } from '../../Backend/EnigmaBackend.js';
+import { execute, splitByFive } from '../../Backend/EnigmaBackend.js';
+import { EnigmaMachine } from '../../Backend/EnigmaMachine.js';
 
 function Enigma() {
     /*---------------- STATE DECLARAION ------------------*/
     const [value, setValue] = useState("nospaces");
     const [sourceText, setSourceText] = useState("");
-    const [seedText, setSeedText] = useState("");
     const [resultText, setResultText] = useState("");
+
+    const [enigmaReflectorText, setEnigmaReflectorText] = useState("");
+    const [enigmaPlugboardText, setEnigmaPlugboardText] = useState("");
+    const [enigmaRotorText, setEnigmaRotorText] = useState(0);
+
     let fileReader;
 
     function download(data, filename, type) {
@@ -54,12 +59,12 @@ function Enigma() {
 
     const handleEncode = (e) => {
         e.preventDefault();
-        setResultText(encode(sourceText, seedText));
+        setResultText(execute(sourceText, enigmaReflectorText, enigmaPlugboardText, enigmaRotorText));
     }
 
     const handleDecode = (e) => {
         e.preventDefault();
-        setResultText(decode(sourceText, seedText));
+        setResultText(execute(sourceText, enigmaReflectorText, enigmaPlugboardText, enigmaRotorText));
     }
 
     const handleTypeChange = (e) => {
@@ -99,7 +104,7 @@ function Enigma() {
     /*---------------- VIEW ------------------*/
     return (
         <div>
-            <Typography variant="h5">Standard Vigenere Cipher</Typography>
+            <Typography variant="h5">Enigma Cipher</Typography>
             <TextareaAutosize aria-label="textarea" placeholder="Input Plaintext or Ciphertext" rowsMin="20" rowsMax="20" className={classes.textarea} onChange={e => setSourceText(e.target.value)} value={sourceText}/>
             <div>
                 <input
@@ -116,9 +121,36 @@ function Enigma() {
                     </Button>
                 </label>
             </div>
-            <div className={classes.textfield}>
-                <TextField id="standard-basic" label="machine-seed" onChange={e => setSeedText(e.target.value)}/>
+            <div className={classes.divider}>
+                <Divider />
             </div>
+            <div className={classes.textfield}>
+                <TextField 
+                    id="standard-basic-1" 
+                    label="Plugboard" 
+                    placeholder="AB ZE   -> Format: (swapLetter)(swapLetter) ..." 
+                    onChange={e => setEnigmaPlugboardText(e.target.value)}
+                />
+            </div>
+            <div className={classes.textfield}>
+                <TextField 
+                    id="standard-basic-2" 
+                    label="Reflector" 
+                    placeholder="3"
+                    type="number"
+                    onChange={e => setEnigmaReflectorText(e.target.value)}
+                />
+            </div>
+            <div className={classes.textfield}>
+                <TextField 
+                    id="standard-basic-3" 
+                    label="Rotors" 
+                    placeholder="32B 34T  -> Format: (seed)(spinCount)(shiftLetter) ..." 
+                    onChange={e => setEnigmaRotorText(e.target.value)}
+                />
+            </div>
+
+            <div className={classes.divider} />
             <div className={classes.buttongroup}>
                 <Button variant="contained" onClick={handleEncode}>
                     Encrypt

@@ -1,40 +1,24 @@
-import {EnigmaMachine} from "../Backend/EnigmaMachine.js";
+import { EnigmaMachine } from "../Backend/EnigmaMachine.js";
 
 /*---------------- CIPHERING FUNCTION ------------------*/
-/* Encoding */
-export function encode(plainText, machineSeed) {
+/* Executing Enigma */
+export function execute(plainText, enigmaReflectorText, enigmaPlugboardText, enigmaRotorText) {
     let cipherText = "";
-    let machine = new EnigmaMachine(machineSeed);
     plainText = cleanText(plainText);
+
+    let machine = getMachine(enigmaReflectorText, enigmaPlugboardText, enigmaRotorText);
 
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText.charCodeAt(i) - 65;
-
         if (charNum >= 0 && charNum <= 25) {
-            charNum = machine.encodeLetter(charNum);
+            console.log("Pre: " + charNum)
+            charNum = machine.executeEnigma(charNum);
+            console.log("Post: " + charNum);
             charNum = charNum + 65;
             cipherText += String.fromCharCode(charNum);
         }
     }
     return cipherText;
-}
-
-/* Decoding */
-export function decode(cipherText, machineSeed) {
-    let plainText = "";
-    let machine = new EnigmaMachine(machineSeed);
-    cipherText = cleanText(cipherText);
-
-    for (let i = 0; i < cipherText.length; i++) {
-        let charNum = cipherText.charCodeAt(i) - 65;
-
-        if (charNum >= 0 && charNum <= 25) {
-            charNum = machine.decodeLetter(charNum);
-            charNum = charNum + 65;
-            plainText += String.fromCharCode(charNum);
-        }
-    }
-    return plainText;
 }
 
 export function splitByFive(text) {
@@ -47,6 +31,25 @@ export function splitByFive(text) {
         result += text.charAt(i);
     }
     return result;
+}
+
+function getMachine(enigmaReflectorText, enigmaPlugboardText, enigmaRotorText) {
+    let machine = new EnigmaMachine();
+    machine.setReflector(parseInt(enigmaReflectorText));
+    machine.setPlugboard(enigmaPlugboardText);
+
+    let newRotors = enigmaRotorText.split(" ");
+    for (let i = 0; i < newRotors.length; i++) {
+        let seed = newRotors[i].charAt(0);
+        let spinCount = parseInt(newRotors[i].charAt(1));
+        let shiftLetter = newRotors[i].charCodeAt(2) - 65;
+        if (shiftLetter < 0 || shiftLetter > 25) {
+            shiftLetter = 0;
+        }
+        machine.addRotor(seed, spinCount, shiftLetter);
+    }
+
+    return machine;
 }
 
 function cleanText(text) {
