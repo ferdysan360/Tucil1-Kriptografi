@@ -1,5 +1,11 @@
-/*---------------- CIPHERING FUNCTION ------------------*/
-/* Encoding */
+/**
+ * Affine encryption
+ * Cj = (Ai * Pj + Ki) mod 26
+ * 
+ * @param {String} plainText 
+ * @param {Number} affineKey 
+ * @param {Number} key 
+ */
 export function encode(plainText, affineKey, key) {
     let cipherText = "";
     let keyNum = parseInt(key);
@@ -15,7 +21,15 @@ export function encode(plainText, affineKey, key) {
     return cipherText;
 }
 
-/* Decoding */
+/**
+ * Affine decryption
+ * Syarat Affine Key merupakan coprime dari 26
+ * Pj = (ModInverse(Ai) * Cj - Ki)
+ * 
+ * @param {String} cipherText 
+ * @param {Number} affineKey 
+ * @param {Number} key 
+ */
 export function decode(cipherText, affineKey, key) {
     let plainText = "";
     let keyNum = parseInt(key);
@@ -56,6 +70,7 @@ function cleanText(text) {
     return result;
 }
 
+// Fungsi untuk modulus inverse
 function modInverse(affineKey, totalLetter) {
     for (let i = 1; i < totalLetter; i++) {
         if ((affineKey * i) % totalLetter === 1) {

@@ -1,7 +1,15 @@
 import { EnigmaMachine } from "../Backend/EnigmaMachine.js";
 
-/*---------------- CIPHERING FUNCTION ------------------*/
-/* Executing Enigma */
+/**
+ * Enigma backend
+ * Encode and decode enigma
+ * 
+ * @param {String} plainText - will be encoded
+ * @param {String} enigmaReflectorText - Which number will the reflector be (1 - 5) 
+ * @param {String} enigmaPlugboardText - Plugboard swaps (pairs of letters)
+ * @param {String} enigmaRotorText - List of rotors that will be created
+ * @returns result hasil dari enkripsi atau dekripsi mesin enigma
+ */
 export function execute(plainText, enigmaReflectorText, enigmaPlugboardText, enigmaRotorText) {
     let cipherText = "";
     plainText = cleanText(plainText);
@@ -33,6 +41,14 @@ export function splitByFive(text) {
     return result;
 }
 
+/**
+ * Membuat sebuah machine enigma dengan spesifikasi yang sudah diberikan
+ * 
+ * @param {String} enigmaReflectorText 
+ * @param {String} enigmaPlugboardText 
+ * @param {String} enigmaRotorText 
+ * @returns {Object} mesin Enigma
+ */
 function getMachine(enigmaReflectorText, enigmaPlugboardText, enigmaRotorText) {
     let machine = new EnigmaMachine();
     machine.setReflector(parseInt(enigmaReflectorText));

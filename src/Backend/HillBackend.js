@@ -1,7 +1,14 @@
 import { matrix, multiply, inv, det, round, gcd } from 'mathjs';
 
 /*---------------- CIPHERING FUNCTION ------------------*/
-/* Encoding */
+/**
+ * Hill encoding
+ * Change key into matrix (key length should be a sqaure number)
+ * Multiply the matrix key with the plain text
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ */
 export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
@@ -159,6 +166,12 @@ function modInverse(hillKey, totalLetter) {
     return -1;
 }
 
+/**
+ * Validasi determinan
+ * Memastikan bahwa determinan tidak 0 dan merupakan coprime dari 26
+ * 
+ * @param {Number} key 
+ */
 export function validateDeterminant(key) {
     let keyCodes = getKeys(key);
     let size = Math.sqrt(keyCodes.length);
