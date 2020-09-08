@@ -1,3 +1,9 @@
+/**
+ * Class Enigma Machine
+ * Mencakup 1 Reflector, 1 Plugboard, dan beberapa rotors
+ * Proses:
+ * Plugboard -> Rotor -> Reflector -> Rotor -> Plugboard
+ */
 export class EnigmaMachine {
     constructor() {
         this.rotors = [];
@@ -72,6 +78,11 @@ export class EnigmaMachine {
     }
 }
 
+/**
+ * Rotor enigma
+ * Dapat melakukan shift, getCipher, dan getPlain
+ * Rotor paling cepat merupakan rotor yang paling dekat dengan plugboard
+ */
 class EnigmaRotor {
     constructor(seed, spinCount, rotorShiftNum) {
         this.leftRotor = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -131,6 +142,10 @@ class EnigmaRotor {
     }
 }
 
+/**
+ * Plugboard
+ * Berfungsi untuk menukar huruf-huruf
+ */
 class EnigmaPlugboard {
     constructor(swappers) {
         this.plugboard = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -170,6 +185,10 @@ class EnigmaPlugboard {
     }
 }
 
+/**
+ * Enigma reflector
+ * Reflector berfungsi untuk membalikkan huruf
+ */
 class EnigmaReflector {
     constructor(reflectorNum) {
         let reflectorNumber = parseInt(reflectorNum);

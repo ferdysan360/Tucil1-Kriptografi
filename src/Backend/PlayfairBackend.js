@@ -1,17 +1,19 @@
+/**
+ * Encode Playfair Cipher
+ * Buat matriks 5x5 lalu memanggil getEncodePairs untuk enkripsi setiap huruf
+ * 
+ * @param {String} plainText 
+ * @param {String} key
+ * @returns cipherText 
+ */
 export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = cleanUpKey(key);
     let keyMatrix = createKeyMatrix(keyCodes);
     let textPairs = cleanText(plainText);
 
-    console.log("Key Matrix");
-    console.log(keyMatrix);
-    console.log("Text Pairs");
-    console.log(textPairs);
-
     for (let i = 0; i < textPairs.length; i++) {
         let encodedPair = getEncodePairs(keyMatrix, textPairs[i]);
-        console.log(encodedPair);
         cipherText += encodedPair[0];
         cipherText += encodedPair[1];
     }
@@ -19,6 +21,13 @@ export function encode(plainText, key) {
     return cipherText;
 }
 
+/**
+ * Decode Playfair Cipher
+ * Buat matriks 5x5 lalu memanggil getDecodePairs untuk dekripsi setiap huruf
+ * 
+ * @param {String} cipherText 
+ * @param {String} key 
+ */
 export function decode(cipherText, key) {
     let plainText = "";
     let keyCodes = cleanUpKey(key);
@@ -66,7 +75,13 @@ function cleanUpKey(key) {
     return resultArray;
 }
 
-// Making the key matrix from keyArray
+/**
+ * Membuat sebauh key matrix
+ * Dibuat dengan menambahkan setiap huruf kecuali J
+ * 
+ * @param {Object} keyArray
+ * @returns resultMatrix 
+ */
 function createKeyMatrix(keyArray) {
     // Fill the array
     for (let i = 65; i <= 90; i++) {
@@ -75,7 +90,6 @@ function createKeyMatrix(keyArray) {
             keyArray.push(charValue);
         }
     }
-
     // Create matrix
     let resultMatrix = [];
     let matrixRow = [];
@@ -86,11 +100,18 @@ function createKeyMatrix(keyArray) {
             matrixRow = [];
         }
     }
-
     return resultMatrix;
 }
 
-// Cleaning up the text to be ready for playfair
+/**
+ * Clean Text khusus untuk Playfair Cipher
+ * Digunakan bukan hanya untuk mengubah semuanya jadi Uppercase
+ * Mengubah J menjadi I, lalu menghasilkan pairing huruf
+ * Jika terdapat dari pair dengan huruf yang sama, maka ganti salah satu menjadi X
+ * 
+ * @param {String} text
+ * @returns result
+ */
 function cleanText(text) {
     let tempResult = "";
     let result = [];
@@ -107,13 +128,10 @@ function cleanText(text) {
         }
     }
 
-    console.log(tempResult);
-
     // Create pairs and preventing same pairs
     let i = 0;
     while (i < (tempResult.length - 1)) {
         let tempPair = [];
-
         tempPair.push(tempResult.charAt(i));
         tempPair.push(tempResult.charAt(i + 1));
 
@@ -129,13 +147,22 @@ function cleanText(text) {
         let tempPair = [];
         tempPair.push(tempResult.charAt(tempResult.length - 1));
         tempPair.push('X');
-
         result.push(tempPair);
     }
     return result;
 }
 
-// Get encoded pairs
+/**
+ * Get Encode Pairs
+ * Encoding dalam sebuah matriks dengan aturan:
+ * Pair dalam row sama: Geser ke kanan
+ * Pair dalam kolom sama: Geser ke bawah
+ * Selain itu: Cari baris pair kiri, dan kolom pair kanan; lalu pair kanan itu titik potong satu lagi
+ * 
+ * @param {Object} keyMatrix 
+ * @param {Object} sourcePair
+ * @returns pasangan huruf yang sudah diencode
+ */
 function getEncodePairs(keyMatrix, sourcePair) {
     let resultPair = [];
 
@@ -161,7 +188,17 @@ function getEncodePairs(keyMatrix, sourcePair) {
     return resultPair;
 }
 
-// Get encoded pairs
+/**
+ * Get Decode Pairs
+ * Decoding dalam sebuah matriks dengan aturan:
+ * Pair dalam row sama: Geser ke kiri
+ * Pair dalam kolom sama: Geser ke atas
+ * Selain itu: Cari baris pair kanan, dan kolom pair kiri; lalu pair kanan itu titik potong satu lagi
+ * 
+ * @param {Object} keyMatrix 
+ * @param {Object} sourcePair 
+ * @returns pasangan huruf yang sudah didecode
+ */
 function getDecodePairs(keyMatrix, sourcePair) {
     let resultPair = [];
 
@@ -187,6 +224,13 @@ function getDecodePairs(keyMatrix, sourcePair) {
     return resultPair;
 }
 
+/**
+ * Mendapatkan lokasi huruf di matriks pair
+ * 
+ * @param {Object} keyMatrix 
+ * @param {String} letter 
+ * @returns lokasi dari key matrix tersebut
+ */
 function getLocation(keyMatrix, letter) {
     let resultLocation = []
     for (let i = 0; i < keyMatrix.length; i++) {

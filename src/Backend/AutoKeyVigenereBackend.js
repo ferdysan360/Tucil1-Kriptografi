@@ -1,4 +1,12 @@
-/* Encoding */
+/**
+ * Encode AutoKey Vigenere
+ * Cj = (Pj + Ki) mod 26
+ * Dengan key diperpanjang dengan Pj setelah 
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ * @returns {String} cipherText
+ */
 export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
@@ -16,8 +24,6 @@ export function encode(plainText, key) {
         }
     }
 
-    console.log(keyCodes);
-
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText.charCodeAt(i) - 97;
         let currentKey = keyCodes[i % keyCodes.length];
@@ -32,7 +38,15 @@ export function encode(plainText, key) {
     return cipherText;
 }
 
-/* Decoding */
+/**
+ * Decode AutoKey Vigenere
+ * Pj = (Cj - Ki) mod 26
+ * Dengan Key akan diperpanjangan dengan hasil translate
+ * 
+ * @param {String} cipherText 
+ * @param {String} key
+ * @returns {String} plainText 
+ */
 export function decode(cipherText, key) {
     let plainText = "";
     let keyCodes = getKeys(key);

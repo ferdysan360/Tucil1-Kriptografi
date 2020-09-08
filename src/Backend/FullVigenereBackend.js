@@ -1,5 +1,11 @@
 import seedrandom from 'seedrandom';
 
+/**
+ * Create table
+ * Randomize 26 rows of matrix
+ * 
+ * @returns {Object} table
+ */
 export function generateTable() {
     let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
         10, 11, 12, 13, 14, 15, 16, 17,
@@ -7,7 +13,6 @@ export function generateTable() {
     ];
 
     let table = [];
-
     var rng = seedrandom();
 
     for (let i = 0; i < 26; i++) {
@@ -16,17 +21,23 @@ export function generateTable() {
         table.push(arrayTemp);
     }
 
-    console.log(table)
     return table;
 }
 
-/* Encoding */
+/**
+ * Encode Full Vigenere
+ * Cj = table[Ki][Pj]
+ * Dengan table berupa tabel yang sudah diinisalisasi terlebih dahulu
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ * @param {Object} table 
+ * @returns {String} cipherText
+ */
 export function encode(plainText, key, table) {
     let cipherText = "";
     let keyCodes = getKeys(key);
     plainText = cleanText(plainText).toLowerCase();
-
-    console.log(keyCodes);
 
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText.charCodeAt(i) - 97;
@@ -43,7 +54,16 @@ export function encode(plainText, key, table) {
     return cipherText;
 }
 
-/* Decoding */
+/**
+ * Decode Full Vigenere
+ * Pj = cari di table j dengan nilai table[Ki][j] = Cj
+ * Dengan table berupa tabel yang sudah diinisalisasi terlebih dahulu
+ * 
+ * @param {String} cipherText 
+ * @param {String} key 
+ * @param {Object} table 
+ * @returns {String} plainText
+ */
 export function decode(cipherText, key, table) {
     let plainText = "";
     let keyCodes = getKeys(key);

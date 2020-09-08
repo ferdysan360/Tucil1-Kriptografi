@@ -1,9 +1,14 @@
-/* Encoding */
+/**
+ * Encode Extended Vigenere Text
+ * Cj = (Pj + Ki) mod 256
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ * @returns {String} cipherText
+ */
 export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
-
-    console.log(keyCodes);
 
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText.charCodeAt(i);
@@ -16,7 +21,14 @@ export function encode(plainText, key) {
     return cipherText;
 }
 
-/* Decoding */
+/**
+ * Decode Extended Vigenere Text
+ * Pj = (Cj - Ki) mod 256
+ * 
+ * @param {String} cipherText
+ * @param {String} key 
+ * @returns {String} plainText
+ */
 export function decode(cipherText, key) {
     let plainText = "";
     let keyCodes = getKeys(key);
@@ -32,12 +44,20 @@ export function decode(cipherText, key) {
     return plainText;
 }
 
+/**
+ * Encode Extended Vigenere File
+ * Cj = (Pj + Ki) mod 256
+ * Uses Int8Array as the byte arrays
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ * @returns {String} cipherText
+ */
 export function encodeFile(plainText, key) {
-    let cipherText = []
+    let cipherText = [];
     plainText = new Int8Array(plainText);
     
     let keyCodes = getKeys(key);
-    console.log(plainText);
     for (let i = 0; i < plainText.length; i++) {
         let charNum = plainText[i];
         let currentKey = keyCodes[i % keyCodes.length];
@@ -47,13 +67,18 @@ export function encodeFile(plainText, key) {
     }
     
     let int8cipherText = new Int8Array(cipherText);
-
-    console.log(int8cipherText)
-
     return int8cipherText;
 }
 
-/* Decoding */
+/**
+ * Decode Extended Vigenere Text
+ * Pj = (Cj - Ki) mod 256
+ * Using Int8Array as byte arrays
+ * 
+ * @param {String} cipherText
+ * @param {String} key 
+ * @returns {String} plainText
+ */
 export function decodeFile(cipherText, key) {
     let plainText = [];
     cipherText = new Int8Array(cipherText);
@@ -69,23 +94,8 @@ export function decodeFile(cipherText, key) {
     }
 
     let int8plainText = new Int8Array(plainText);
-
     return int8plainText;
 }
-
-/*
-function cleanText(text) {
-    let result = "";
-
-    for (let i = 0; i < text.length; i++) {
-        if ((text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) || (text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122)) {
-            result += text.charAt(i);
-        }
-    }
-
-    return result;
-}
-*/
 
 function getKeys(text) {
     let result = [];

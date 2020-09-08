@@ -1,5 +1,11 @@
-/*---------------- CIPHERING FUNCTION ------------------*/
-/* Encoding */
+/**
+ * Encode Standard Vigenere
+ * Cj = (Pj + Ki) mod 26
+ * 
+ * @param {String} plainText 
+ * @param {String} key 
+ * @returns {String} cipherText
+ */
 export function encode(plainText, key) {
     let cipherText = "";
     let keyCodes = getKeys(key);
@@ -18,7 +24,14 @@ export function encode(plainText, key) {
     return cipherText;
 }
 
-/* Decoding */
+/**
+ * Decode Standard Vigenere
+ * Pj = (Cj - Ki) mod 26
+ * 
+ * @param {String} cipherText
+ * @param {String} key
+ * @returns {String} plainText
+ */
 export function decode(cipherText, key) {
     let plainText = "";
     let keyCodes = getKeys(key);

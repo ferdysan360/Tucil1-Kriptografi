@@ -1,5 +1,13 @@
 import { encode, decode } from '../Backend/StandardVigenereBackend.js';
 
+/**
+ * Super encryption
+ * Vigenere encryption + Transform encrpytoin
+ * 
+ * @param {String} plainText 
+ * @param {String} vigenereKey 
+ * @param {Number} transposeKey 
+ */
 export function superEncode(plainText, vigenereKey, transposeKey) {
     transposeKey = parseInt(transposeKey);
     plainText = cleanText(plainText);
@@ -10,6 +18,14 @@ export function superEncode(plainText, vigenereKey, transposeKey) {
     return transform(vigenereText, transposeKey);
 }
 
+/**
+ * Super decryption
+ * Transform decryption + Vigenere decryption
+ * 
+ * @param {String} cipherText 
+ * @param {String} vigenereKey 
+ * @param {Number} transposeKey 
+ */
 export function superDecode(cipherText, vigenereKey, transposeKey) {
     cipherText = cleanText(cipherText);
     transposeKey = Math.round(cipherText.length / parseInt(transposeKey));
@@ -29,10 +45,15 @@ function paddings(text, transposeKey) {
     return text;
 }
 
-// Transpose dengan panjang setiap baris 5
+/**
+ * Transform encryption + decrpytion
+ * Change column into row, vice versa
+ * 
+ * @param {String} text 
+ * @param {Number} transposeKey 
+ */
 function transform(text, transposeKey) {
     let result = "";
-
     for (let i = 0; i < transposeKey; i++) {
         let j = 0;
         while ((i + j * transposeKey) < text.length) {
@@ -40,7 +61,6 @@ function transform(text, transposeKey) {
             j += 1;
         }
     }
-
     return result;
 }
 
