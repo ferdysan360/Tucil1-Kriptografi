@@ -1,68 +1,76 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Tugas Kecil 1 Kriptografi
+## Pembuatan Algoritma Kriptografi
 
-## Available Scripts
+Anggota:
+- Ferdy Santoso / 13517116
+- Jan Meyer Saragih / 13517131
 
-In the project directory, you can run:
+Mencakup:
+- Standard Vigenere Cipher
+- Full Vigenere Cipher
+- Auto Key Vigenere Cipher
+- Extended Vigenere Cipher
+- Playfair Cipher
+- Super Encryption Cipher
+- Affine Cipher
+- Hill Cipher
+- Enigma Cipher
 
-### `npm start`
+### 1. Standard Vigenere Cipher
+Merupakan Cipher Vigenere Standard yang menerima teks dan key.
+Jika teks lebih panjang dari key, maka key akan diulang sampai sepanjang teks.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Masukkan teks input dan teks key dan tekan tombol encrypt atau decrypt. Setelah itu, hasil akan terlihat di teks output yang dapat didownload dalam txt. Adapun yang dienkripsi hanya alfabet (A - Z). Angka dan lainnya tidak akan dienkripsi dan akan dibuang.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### 2. Full Vigenere Cipher
+Full Vigenere Cipher merupakan varian dari Standard Vigenere Cipher. Yang membedakannya adalah tabel Key. Jika pada standard vigenere tabel key bernilai konstan, full viegenere mengacak key tersebut.
 
-### `npm test`
+Sama seperti Standard Vigenere, masukkan teks input dan key, lalu tekan tombol encrypt atau decrypt dan hasil akan ditemukan.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Auto Key Vigenere Cipher
+Auto Key Vigenere merupakan variasi vigenere cipher yang menempelkan plainteks pada akhir key jika key lebih pendek dari panjang plainTeks.
 
-### `npm run build`
+Sama seperti sebelumnya, masukkan teks input dan key, lalu tekan tombol encrypt atau decrypt dan hasil akan ditampilkan.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Extended Vigenere Cipher
+Extended Vigenere Cipher merupakan Vigenere Cipher yang digunakan untuk 256 huruf ASCII. Dengan demikian, angka juga dapat dimasukkan ke dalamnya. Karena sudah mendapat 256 huruf, maka ini juga dapat mengenkripsi file.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Sama seperti sebelumnya, masukan teks input dan key, lalu tekan tombol encrypt atau decrypt untuk melihat hasilnya. Selain itu, dapat juga melakukan upload file dan akan mendownload file hasil enkripsinya (tentunya tidak dapat dibuka), lalu upload ulang dan dekripsi untuk mendapat file awalnya.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 5. Playfair Cipher
+Playfair cipher merupakan salah satu cipher yang bertujuan untuk menangkal proses analisis frekuensi. Playfair cipher dapat dibuat dengan membuat matriks 5x5 dari key (kecuali huruf J), lalu membuat pasasngan kata plainteks per 2 huruf. Huruf tidak boleh J dan tidak boleh sama dalam 1 pasangan (jika sama diganti dengan X).
 
-### `npm run eject`
+Sama seperti sebelumnya, masukkan teks input dan key. Key akan diubah menjadi matriks lalu dapat melakukan proses enkripsi dan dekripsi.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 6. Super Encryption Cipher
+Super Encryption Cipher merupakan cipher yang menggunakan cipher substitusi + cipher transformasi. Cipher substitusi menggunakan cipher vigenere dan cipher transformasi menggunakan transpose key.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Untuk input membutuhkan 2 buah key. Key pertama akan digunakan untuk vigenere cipher (alfabet) dan key kedua merupakan cipher transformasi (menggunakan angka) yang merupakan perubahan kolom dan baris dalam sebuah matriks. Tekan encrypt / decrypt dan dapatkan hasilnya.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 7. Affine Cipher
+Affine cipher memiliki kemiripan dengna caesar cipher. Namun, sekarang plainteks dikali dengan affine key. Sehingga terdapat 2 key (yang pertama untuk mengalikan plainteks dan yang kedua untuk menggeser hasil perkaliannya).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Untuk input menggunakan 2 key. Key pertama adalah affine key yang digunakan untuk mengalikan. Merupakan sebuah angka yang bersifat coprime dengan 26. Key kedua merupakan key untuk pergeseran dan key ini merupakan angka sembarang (nanti akan dimod dengan 26).
 
-## Learn More
+### 8. Hill Cipher
+Hill cipher adalah cipher yang menggunakan matriks input. Matriks yang dibuat adalah matriks square yang digunakan untuk dikali dengan beberapa huruf yang akhirnya akan mendapatkan solusi dari hill cipher tersebut.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Terdapat 1 buah key yang harus dimasukkan. Namun, key tersebut merupakan string dengan panjang bilangan kuadrat (1, 4, 9, ...) lalu determinan dari matriks yang dibuat haruslah merupakan coprime dari 26 (agar dapat di-inverse saat dekripsi).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 9. Enigma Cipher
+Enigma Cipher merupakan cipher yang menggunakan mesin enigma. Adapun dari mesin tersebut terdapat beberapa komponen, yaitu:
+- Rotor
+- Reflector
+- Plugboard
 
-### Code Splitting
+Arah penggunaan mesin tersebut dimulai dari plugboard -> rotor (bisa lebih dari 1) -> reflector -> rotor -> plugboard. Adapun terdapat ketentuan dalam input rotor, plugboard, dan reflector.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Rotor ditentukan dengan 3 huruf. Karakter pertama merupakan seed rotor (bagaimana konfigurasi dari rotor tersebut), karakter kedua merupakan spinCount rotor (berapa kali rotor sudah diputar dari konfigurasi awal), dan karakter ketiga merupakan shiftLetter rotor (pada huruf apa rotor akan memutar rotor yang lebih lambat dari dia). Input merupakan 1 textbox, sehingga setiap rotor akan dipisahkan dengan spasi dengan rotor paling cepat lebih dahulu.
 
-### Analyzing the Bundle Size
+Plugboard merupakan board di mana huruf-huruf ditukar. Input berupa pasangan huruf yang dipisahkan dengan spasi (tidak boleh huruf dari pasangan sebelumnya). Pasangan huruf tersebut akan diswap ketika masuk ke dalam plugboard.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Reflector berfungsi untuk memantulkan. Khusus komponen ini, kami mempunyai beberapa default (1 - 5). Masukkan salah satu dari angka tersebut, lalu dapatkan hasilnya.
 
-### Making a Progressive Web App
+Adapun proses enkripsi dan dekripsi sama aja karena merupakan enigma machine bersifat simetris (karena reflector). Dengan demikian tombol encrypt dan decrypt memanggil method yang sama (execute).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Input yang diminta merupakan teks beserta konfigurasi dari mesin enigma yang sudah dijelaskan sebelumnya.
